@@ -57,6 +57,7 @@
         "mezzio/mezzio": "^3.23.1",
         "mezzio/mezzio-fastroute": "^3.11.0",
         "mezzio/mezzio-helpers": "^5.20",
+        "monolog/monolog": "^3.0@dev",
         "openai-php/client": "^0.20.0",
         "settermjd/mezzio-swoole-websocket": "*",
         "symfony/http-client": "^7.4",

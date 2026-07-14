@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\WebSocket\Listener;
 
-use Settermjd\MezzioSwoole\WebSocket\Event\WebSocketMessageEvent;
+use Psr\Log\LoggerInterface;
+use Settermjd\MezzioSwoole\WebSocket\Event\WebSocketOpenEvent;
 
 use function sprintf;
 
@@ -17,10 +18,14 @@ use function sprintf;
  */
 final class ConnectionOpenedListener
 {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
+    }
+
     public function __invoke(WebSocketOpenEvent $event): void
     {
         $fd = $event->getRequest()->fd;
-
-        $event->getServer()->push($fd, sprintf('connected: fd=%d', $fd));
+        $this->logger->info(sprintf('connected: fd=%d', $fd));
     }
 }

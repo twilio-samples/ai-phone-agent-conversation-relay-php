@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Psr\Log\LoggerInterface;
+
 return [
     'mezzio-swoole' => [
         'enable_coroutine' => true,
@@ -13,6 +15,9 @@ return [
                 'worker_num'      => 2,          // The number of HTTP Server Workers
                 'task_worker_num' => 2,          // The number of Task Workers
                 'task_enable_coroutine' => true, // optional to turn on task coroutine support
+            ],
+            'logger' => [
+                'logger-name' => LoggerInterface::class,
             ],
         ],
     ],

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Factory\LoggerFactory;
+use App\WebSocket\Table\ConnectionTable;
+use App\WebSocket\Table\MessageTable;
+use Psr\Log\LoggerInterface;
+
 /**
  * The configuration provider for the App module
  *
@@ -32,15 +37,20 @@ class ConfigProvider
     public function getDependencies(): array
     {
         return [
-            'invokables' => [
-                Handler\PingHandler::class => Handler\PingHandler::class,
-                WebSocket\Listener\ConnectionOpenedListener::class => WebSocket\Listener\ConnectionOpenedListener::class,
-
-            ],
             'factories'  => [
                 Handler\TwimlHandler::class => Handler\TwimlHandlerFactory::class,
+                LoggerInterface::class => LoggerFactory::class,
                 Service\OpenAiService::class   => Service\OpenAiServiceFactory::class,
+                WebSocket\Listener\ConnectionClosedListener::class => WebSocket\Listener\ConnectionClosedListenerFactory::class,
+                WebSocket\Listener\ConnectionOpenedListener::class => WebSocket\Listener\ConnectionOpenedListenerFactory::class,
                 WebSocket\Listener\ConversationRelayMessageListener::class => WebSocket\Listener\ConversationRelayMessageListenerFactory::class,
+            ],
+            'invokables' => [
+                Handler\PingHandler::class => Handler\PingHandler::class,
+            ],
+            'services' => [
+                ConnectionTable::class => new ConnectionTable(),
+                MessageTable::class => new MessageTable(),
             ],
         ];
     }
@@ -64,10 +74,10 @@ class ConfigProvider
         return [
             'swoole-http-server' => [
                 'listeners' => [
-                    Settermjd\MezzioSwoole\WebSocket\Event\WebSocketOpenEvent::class => [
+                    \Settermjd\MezzioSwoole\WebSocket\Event\WebSocketOpenEvent::class => [
                         WebSocket\Listener\ConnectionOpenedListener::class,
                     ],
-                    Settermjd\MezzioSwoole\WebSocket\Event\WebSocketMessageEvent::class => [
+                    \Settermjd\MezzioSwoole\WebSocket\Event\WebSocketMessageEvent::class => [
                         WebSocket\Listener\ConversationRelayMessageListener::class,
                     ],
                 ],
