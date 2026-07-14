@@ -1,0 +1,5 @@
+{
+    "$schema": "/Users/msetter/.local/share/nvim/opt/phpactor/phpactor.schema.json",
+    "language_server_psalm.enabled": true,
+    "php_code_sniffer.enabled": true
+}
