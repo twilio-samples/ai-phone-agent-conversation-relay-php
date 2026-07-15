@@ -42,7 +42,6 @@ class ConfigProvider
                 LoggerInterface::class => LoggerFactory::class,
                 Service\OpenAiService::class   => Service\OpenAiServiceFactory::class,
                 WebSocket\Listener\ConnectionClosedListener::class => WebSocket\Listener\ConnectionClosedListenerFactory::class,
-                WebSocket\Listener\ConnectionOpenedListener::class => WebSocket\Listener\ConnectionOpenedListenerFactory::class,
                 WebSocket\Listener\ConversationRelayMessageListener::class => WebSocket\Listener\ConversationRelayMessageListenerFactory::class,
             ],
             'invokables' => [
@@ -74,8 +73,8 @@ class ConfigProvider
         return [
             'swoole-http-server' => [
                 'listeners' => [
-                    \Settermjd\MezzioSwoole\WebSocket\Event\WebSocketOpenEvent::class => [
-                        WebSocket\Listener\ConnectionOpenedListener::class,
+                    \Settermjd\MezzioSwoole\WebSocket\Event\WebSocketCloseEvent::class => [
+                        WebSocket\Listener\ConnectionClosedListener::class,
                     ],
                     \Settermjd\MezzioSwoole\WebSocket\Event\WebSocketMessageEvent::class => [
                         WebSocket\Listener\ConversationRelayMessageListener::class,
