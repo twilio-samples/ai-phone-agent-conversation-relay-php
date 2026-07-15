@@ -56,14 +56,14 @@ ngrok http 8080
 ----
 . Copy the Forwarding URL from the terminal output
 +
-image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/4eb6e33139fa9da42198da18deee76fc863d64ff/docs/images/ngrok-terminal-output.png?raw=true["Terminal output from running ngrok with the Forwarding URL highlighted"]
+image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/56d8b2bf6da5f27c1cc9c2007833dc8e2bef1c44/docs/images/ngrok-terminal-output.png?raw=true["Terminal output from running ngrok with the Forwarding URL highlighted"]
 
 . Configure your Twilio Account:
 ** Log into {twilio-console}[the Twilio Console]
 ** Navigate through menu:Phone Numbers[Manage > Active Numbers]
 ** Click your voice-capable phone number to open its configuration page
 +
-image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/4eb6e33139fa9da42198da18deee76fc863d64ff/docs/images/twilio-console-voice-configuration-rendered-in-safari-on-macos.png?raw=true["The Twilio Console Voice Configuration form, loaded with the default settings"]
+image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/56d8b2bf6da5f27c1cc9c2007833dc8e2bef1c44/docs/images/twilio-console-voice-configuration-rendered-in-safari-on-macos.png?raw=true["The Twilio Console Voice Configuration form, loaded with the default settings"]
 
 ** Under the *Voice Configuration* section, set:
 *** *A Call Comes In* to "Webhook" and enter the URL for your TwiML endpoint.
