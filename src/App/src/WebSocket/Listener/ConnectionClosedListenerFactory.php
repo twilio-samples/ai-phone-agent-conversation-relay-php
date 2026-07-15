@@ -18,6 +18,6 @@ final class ConnectionClosedListenerFactory
         $connectionTable = $container->get(ConnectionTable::class);
         assert($connectionTable instanceof ConnectionTable);
 
-        return new ConnectionClosedListener($messageTable);
+        return new ConnectionClosedListener($messageTable, $connectionTable);
     }
 }
