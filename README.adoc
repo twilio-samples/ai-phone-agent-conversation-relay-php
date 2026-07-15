@@ -1,0 +1,104 @@
+:composer: https://getcomposer.org
+:deepgram-flux: https://deepgram.com/learn/introducing-flux-conversational-speech-recognition
+:experimental: true
+:issues: https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/issues
+:mezzio-swoole: https://docs.mezzio.dev/mezzio-swoole/v4/intro/
+:mezzio: https://docs.mezzio.dev/mezzio/
+:mit-license: http://www.opensource.org/licenses/mit-license.html
+:ngrok: https://ngrok.com/
+:openai-api: https://openai.com/api/
+:openapi-ai-key: https://platform.openai.com/api-keys
+:php: https://php.net
+:prs: https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/pulls
+:try-twilio: https://try-twilio.com
+:twilio-console: https://console.twilio.com
+:conversation-relay-twiml-verb: https://www.twilio.com/docs/voice/twiml/connect/conversationrelay
+:connect-twiml-verb: https://www.twilio.com/docs/voice/twiml/connect
+= AI Phone Agent Conversation Relay PHP
+
+== Application Overview
+
+The application is a fully functional AI phone agent written in PHP using {mezzio}[Mezzio] and {mezzio-swoole}[Mezzio-Swoole], the {openai-api}[OpenAI API] as the language model, and {deepgram-flux}[Deepgram Flux] for state-of-the-art speech recognition.
+
+When someone dials your Twilio number, Twilio requests TwiML from the application's "/twiml" endpoint.
+The endpoint returns a {conversation-relay-twiml-verb}[<ConversationRelay>] verb inside a {connect-twiml-verb}[<Connect>] block, which tells Twilio to open a [WebSocket] connection to your server and hand the call off to [Conversation Relay].
+
+From that point on, Conversation Relay acts as the voice pipeline.
+It transcribes everything the caller says using speech-to-text (STT) and sends the transcript to your WebSocket server as a JSON message.
+Your server calls an AI model with the transcript, streams the response back over the WebSocket, and Conversation Relay synthesises each token into speech using text-to-speech (TTS), playing it to the caller in real time.
+
+== Prerequisites
+
+To run the app locally, you need the following:
+
+* An {ngrok}[ngrok] account
+* An {openapi-ai-key}[OpenAI API key]
+* {composer}[Composer]
+* {php}[PHP 8.4] or later
+* {try-twilio}[A Twilio account] with a voice-capable phone number
+
+== Quickstart
+
+. Clone or download this repository
+. Install the dependencies:
++
+[source,bash]
+----
+composer install
+----
+
+. Rename the _.env.example_ file to _.env_
+. Start ngrok listening on port 8080 and :
++
+[source,bash]
+----
+ngrok http 8080
+----
+. Copy the Forwarding URL from the terminal output
++
+image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/4eb6e33139fa9da42198da18deee76fc863d64ff/docs/images/ngrok-terminal-output.png?raw=true["Terminal output from running ngrok with the Forwarding URL highlighted"]
+
+. Configure your Twilio Account:
+** Log into {twilio-console}[the Twilio Console]
+** Navigate through menu:Phone Numbers[Manage > Active Numbers]
+** Click your voice-capable phone number to open its configuration page
++
+image::https://github.com/twilio-samples/ai-phone-agent-conversation-relay-php/blob/4eb6e33139fa9da42198da18deee76fc863d64ff/docs/images/twilio-console-voice-configuration-rendered-in-safari-on-macos.png?raw=true["The Twilio Console Voice Configuration form, loaded with the default settings"]
+
+** Under the *Voice Configuration* section, set:
+*** *A Call Comes In* to "Webhook" and enter the URL for your TwiML endpoint.
+It will be your ngrok Forwarding URL, plus the suffix "/twiml", e.g., https://1234abcd.ngrok.app/twiml
+*** Set the *HTTP method* to "HTTP POST"
+** Scroll down to the bottom of the page and click btn:[Save Configuration]
+
+. Set the Required Environment Variables
+** Set the ngrok Forwarding URL's domain, minus the protocol, i.e., "https://", as the value of the `DOMAIN` variable in _.env_
+** Set your OpenAI API key as the value of `OPENAI_API_KEY` in _.env_
+
+. Start the Application
++
+[source,bash]
+----
+DOMAIN=<ngrok domain> OPENAI_API_KEY=<your OpenAI api key> vendor/bin/laminas mezzio:swoole:start
+----
++
+This will start four workers listening on port 8080
++
+NOTE: To stop the workers, run `vendor/bin/laminas mezzio:swoole:stop` in a separate terminal window or session.
+
+== Contributing
+
+If you want to contribute to the project, whether you have found issues with it or just want to improve it, here's how:
+
+* {issues}[Issues]: ask questions and submit your feature requests, bug reports, etc
+* {prs}[Pull requests]: send your improvements
+
+== License
+
+{mit-license}[MIT]
+
+== Disclaimer
+
+No warranty expressed or implied.
+Software is as is.
+
