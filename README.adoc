@@ -21,7 +21,7 @@
 The application is a fully functional AI phone agent written in PHP using {mezzio}[Mezzio] and {mezzio-swoole}[Mezzio-Swoole], the {openai-api}[OpenAI API] as the language model, and {deepgram-flux}[Deepgram Flux] for state-of-the-art speech recognition.
 
 When someone dials your Twilio number, Twilio requests TwiML from the application's "/twiml" endpoint.
-The endpoint returns a {conversation-relay-twiml-verb}[<ConversationRelay>] verb inside a {connect-twiml-verb}[<Connect>] block, which tells Twilio to open a [WebSocket] connection to your server and hand the call off to [Conversation Relay].
+The endpoint returns a {conversation-relay-twiml-verb}[<ConversationRelay>] verb inside a {connect-twiml-verb}[<Connect>] block, which tells Twilio to open a WebSocket connection to your server and hand the call off to Conversation Relay.
 
 From that point on, Conversation Relay acts as the voice pipeline.
 It transcribes everything the caller says using speech-to-text (STT) and sends the transcript to your WebSocket server as a JSON message.
